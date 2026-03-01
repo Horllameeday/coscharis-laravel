@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicles', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+        Schema::create('price_matrices', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('client_price_matrix_id')->constrained('client_price_matrices')->cascadeOnDelete();
             $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
-            $table->string('make');
-            $table->string('model');
-            $table->string('plate_number');
-            $table->boolean('status')->default(true);
+            $table->enum('category', \App\Enums\PriceMatrixCategory::values());
+            $table->enum('type', \App\Enums\PriceMatrixType::values());
+            $table->decimal('price');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('price_matrices');
     }
 };

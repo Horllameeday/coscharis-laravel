@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('weight', 8, 2);
             $table->foreignId('category_id')->constrained('product_categories')->cascadeOnDelete();
-            $table->foreignUuid('shipment_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('shipment_id')->constrained('shipments')->cascadeOnDelete();
             $table->timestamps();
         });
     }

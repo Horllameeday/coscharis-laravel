@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ShipmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,9 +28,19 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('otp/verify', [AuthController::class, 'verifyOtp']);
         Route::post('otp/resend', [AuthController::class, 'resendOtp'])->middleware('throttle:6,1');
 
+        Route::middleware('phone.verified')->group(function () {
+            Route::get('product/category', [ShipmentController::class, 'getProductCategory']);
+            Route::post('shipments', [ShipmentController::class, 'store']);
+            Route::get('shipments/history', [ShipmentController::class, 'history']);
+        });
+
+        Route::get('faqs', [FaqController::class, 'getFaqs']);
+
         // Shipments — requires verified phone number
         Route::middleware('phone.verified')->group(function () {
+            Route::get('product/category', [ShipmentController::class, 'getProductCategory']);
             Route::post('shipments', [ShipmentController::class, 'store']);
+            Route::get('shipments/history', [ShipmentController::class, 'history']);
         });
     });
 });

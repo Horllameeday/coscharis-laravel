@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicles', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
-            $table->string('make');
-            $table->string('model');
-            $table->string('plate_number');
+        Schema::create('client_price_matrices', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->boolean('default')->default(false);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('client_price_matrices');
     }
 };

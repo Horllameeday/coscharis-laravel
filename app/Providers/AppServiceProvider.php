@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected function registerEventListeners(): void
     {
-        Event::listen(Registered::class, VerifyNewUser::class);
+        // Event::listen(Registered::class, VerifyNewUser::class);
     }
 
     /**

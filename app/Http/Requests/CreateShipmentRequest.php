@@ -16,7 +16,7 @@ class CreateShipmentRequest extends FormRequest
         return [
             // Sender
             'sender_person'                 => 'required|string|max:255',
-            'sender_number'                 => 'required|numeric|digits_between:11,15',
+            'sender_number'                 => 'required',
 
             // Pickup
             'pickup_type_id'                => 'required|integer|exists:pickup_types,id',
@@ -27,7 +27,7 @@ class CreateShipmentRequest extends FormRequest
 
             // Receiver
             'receiver_person'               => 'required|string|max:255',
-            'receiver_number'               => 'required|numeric|digits_between:11,15',
+            'receiver_number'               => 'required',
 
             // Destination
             'destination_place_id'          => 'required|string',

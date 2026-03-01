@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('pickup_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
             $table->string('sender_person');
             $table->string('sender_number');
             $table->string('pickup_place_id');
