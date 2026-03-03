@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            // $table->string('pickup_type_id')->foreign()->references('pickup_types')->on('id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
             $table->string('make');
             $table->string('model');

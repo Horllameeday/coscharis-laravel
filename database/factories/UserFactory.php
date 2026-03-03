@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'phone_number' => fake()->regexify('/[\+234]\d{10}/'),
+            'phone_number' => '+234' . fake()->randomElement(['80', '81', '90', '91', '70', '71']) . fake()->numerify('########'),
             'email_verified_at' => now(),
             'phone_number_verified_at' => now(),
             'password' => 'password',

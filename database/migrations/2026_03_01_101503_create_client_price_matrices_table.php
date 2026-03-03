@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('client_price_matrices', function (Blueprint $table) {
             $table->id();
+            // $table->string('id')->primary();
             $table->string('name');
             $table->boolean('default')->default(false);
             $table->boolean('status')->default(true);

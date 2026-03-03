@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pickup_types', function (Blueprint $table) {
             $table->id();
+            // $table->string('id')->primary();
             $table->string('name');
             $table->text('description');
             $table->string('image')->nullable();

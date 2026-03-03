@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             // $table->enum('type', \App\Enums\UserType::values())->default(\App\Enums\UserType::CLIENT);
             $table->enum('status', \App\Enums\UserProfileStatus::values())->default(\App\Enums\UserProfileStatus::ENABLED);
+            $table->timestamp('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

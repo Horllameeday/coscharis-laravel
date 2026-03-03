@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AdminRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\UserProfileStatus;
@@ -14,10 +15,13 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, UsesUUID;
+    use HasRoles;
     use HasApiTokens {
         HasApiTokens::createToken as sanctumCreateToken;
     }
@@ -98,7 +102,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function fullName(): string
     {
-        return "$this->firstName $this->lastName";
+        return "$this->first_name $this->last_name";
+    }
+
+    public function guardName(): string
+    {
+        return 'sanctum';
     }
 
     public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null)
@@ -127,6 +136,26 @@ class User extends Authenticatable implements MustVerifyEmail
         ])->save();
     }
 
+    public function vehicle()
+    {
+        return $this->hasOne(Vehicle::class, 'user_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasAnyRole(AdminRole::values());
+    }
+
+    public function isDriver(): bool
+    {
+        return $this->vehicle()->exists();
+    }
+
+    public function isClient(): bool
+    {
+        return !($this->isAdmin() || $this->isDriver());
+    }
+
     public function shipments()
     {
         return $this->hasMany(Shipment::class, 'user_id');
@@ -135,5 +164,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function shipmentsAsDriver()
     {
         return $this->hasMany(Shipment::class, 'driver_id');
+    }
+
+    public function scopeEnabled(Builder $query): void
+    {
+        $query->where('is_enabled', true);
+    }
+
+    public function scopeIsClient(Builder $query): void
+    {
+        $query->where('is_client', false)
+            ->whereDoesntHave('vehicle');
     }
 }

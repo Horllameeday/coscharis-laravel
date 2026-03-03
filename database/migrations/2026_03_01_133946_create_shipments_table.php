@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->nullable();
             $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
             $table->string('sender_person');
             $table->string('sender_number');
@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('duration');
             $table->enum('state', \App\Enums\ShipmentStateEnum::values())->default(\App\Enums\ShipmentStateEnum::NEW->value);
             $table->foreignUuid('driver_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('client_price_matrix_id')->constrained('client_price_matrices')->cascadeOnDelete();
             $table->timestamps();
         });
     }

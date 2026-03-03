@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('price_matrices', function (Blueprint $table) {
             $table->id();
+            // $table->string('id')->primary();
             $table->foreignId('client_price_matrix_id')->constrained('client_price_matrices')->cascadeOnDelete();
             $table->foreignId('pickup_type_id')->constrained('pickup_types')->cascadeOnDelete();
             $table->enum('category', \App\Enums\PriceMatrixCategory::values());

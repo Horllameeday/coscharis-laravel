@@ -60,6 +60,14 @@ class AuthController extends Controller
             return $this->response(Response::HTTP_BAD_REQUEST, 'Credentials mismatch');
         }
 
+        if (!$user->isClient()) {
+            Log::warning('User login failed: Login attempt from non-client user', [
+                'user_id' => $user->id,
+            ]);
+
+            return $this->response(Response::HTTP_FORBIDDEN, 'Not authorised to login');
+        }
+
         if (!$user->isEnabled()) {
             Log::info('Login Error: User disabled', [
                 'user_id' => $user->id,
@@ -77,8 +85,11 @@ class AuthController extends Controller
         $token = $user->createToken("{$user->first_name}-{$user->id}-token", [TokenAbility::CLIENT_ACCESS->value], $expires_at);
 
         Log::info('Login: User logged in!', [
-                'user_id' => $user->id,
-            ]);
+            'user_id' => $user->id,
+        ]);
+
+        $user->last_login = now();
+        $user->save();
 
         $data = [
             'user' => $user,

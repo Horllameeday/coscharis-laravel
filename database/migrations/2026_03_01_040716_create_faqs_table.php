@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
+            // $table->string('id')->primary();
             $table->string('question');
             $table->text('answer');
             $table->boolean('status')->default(true);
